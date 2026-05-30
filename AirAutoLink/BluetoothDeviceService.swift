@@ -99,20 +99,30 @@ final class BluetoothDeviceService: NSObject, ObservableObject {
     }
   }
 
-  @objc private func deviceConnected(
+  @objc nonisolated private func deviceConnected(
     _ notification: IOBluetoothUserNotification,
     device: IOBluetoothDevice
   ) {
-    logger.info("Bluetooth device connected: \(device.nameOrAddress ?? "unknown", privacy: .public)")
-    refreshPairedAudioDevices()
+    // 提取设备名称（String 为 Sendable），避免在 Task 中捕获非 Sendable 的 IOBluetoothDevice
+    let nameOrAddress = device.nameOrAddress ?? "unknown"
+    Task { @MainActor [weak self] in
+      guard let self = self else { return }
+      self.logger.info("Bluetooth device connected: \(nameOrAddress, privacy: .public)")
+      self.refreshPairedAudioDevices()
+    }
   }
 
-  @objc private func deviceDisconnected(
+  @objc nonisolated private func deviceDisconnected(
     _ notification: IOBluetoothUserNotification,
     device: IOBluetoothDevice
   ) {
-    logger.info("Bluetooth device disconnected: \(device.nameOrAddress ?? "unknown", privacy: .public)")
-    refreshPairedAudioDevices()
+    // 提取设备名称（String 为 Sendable），避免在 Task 中捕获非 Sendable 的 IOBluetoothDevice
+    let nameOrAddress = device.nameOrAddress ?? "unknown"
+    Task { @MainActor [weak self] in
+      guard let self = self else { return }
+      self.logger.info("Bluetooth device disconnected: \(nameOrAddress, privacy: .public)")
+      self.refreshPairedAudioDevices()
+    }
   }
 
   private static func makeBluetoothAudioDevice(from ioDevice: IOBluetoothDevice)

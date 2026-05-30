@@ -20,15 +20,14 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
-	<key>LSUIElement</key>
-	<true/>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>AirAutoLink 需要访问已配对的蓝牙音频设备，用于在登录后自动连接你选择的蓝牙音响。</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>AirAutoLink 需要访问已配对的蓝牙音频设备，用于在登录后自动连接你选择的蓝牙音响。</string>
 	<key>NSSupportsAutomaticGraphicsSwitching</key>
 	<true/>
-	<key>CFBundleIconFile</key>
-	<string>AppIcon</string>
+
 </dict>
 </plist>
