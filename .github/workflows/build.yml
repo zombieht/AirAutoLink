@@ -10,6 +10,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# 设置全局环境变量，强制所有 JavaScript Actions 运行在 Node.js 24 上，消除 Node.js 20 弃用警告
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   build:
     name: 编译与打包 macOS 应用
@@ -22,7 +26,7 @@ jobs:
 
       # 步骤 2: 缓存 Homebrew 依赖，加速 create-dmg 工具的安装
       - name: Set up Homebrew Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/Library/Caches/Homebrew
