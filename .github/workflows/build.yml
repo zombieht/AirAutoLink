@@ -20,13 +20,13 @@ jobs:
     runs-on: macos-latest # 使用 macOS 系统以支持 Xcode 编译
 
     steps:
-      # 步骤 1: 检出仓库代码
+      # 步骤 1: 检出仓库代码 (使用 v5 版本原生适配 Node.js 24)
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      # 步骤 2: 缓存 Homebrew 依赖，加速 create-dmg 工具的安装
+      # 步骤 2: 缓存 Homebrew 依赖，加速 create-dmg 工具的安装 (使用 v5 版本原生适配 Node.js 24)
       - name: Set up Homebrew Cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/Library/Caches/Homebrew
@@ -49,9 +49,9 @@ jobs:
             ./package.sh
           fi
 
-      # 步骤 4: 将生成的 DMG 和 ZIP 压缩包上传至 GitHub Actions 归档中，供在网页上下载
+      # 步骤 4: 将生成的 DMG 和 ZIP 压缩包上传至 GitHub Actions 归档中，供在网页上下载 (使用 v7 版本原生适配 Node.js 24)
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: AirAutoLink-macOS-Release
           path: |
