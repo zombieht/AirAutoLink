@@ -101,12 +101,20 @@ final class ReconnectCoordinator: ObservableObject {
         return
       }
 
-      try? await Task.sleep(for: retryDelay)
+      do {
+        try await Task.sleep(for: retryDelay)
+      } catch {
+        return
+      }
     }
   }
 
   @discardableResult
   private func connectOnce(attempt: Int, maxAttempts: Int, shouldRetry: Bool) async -> Bool {
+    if Task.isCancelled {
+      return true
+    }
+
     guard let storedTargetDevice = currentTargetDevice() else {
       status = .noTarget
       return true
@@ -133,6 +141,10 @@ final class ReconnectCoordinator: ObservableObject {
       result = await bluetoothDeviceService.connect(to: targetDevice)
     }
 
+    if Task.isCancelled {
+      return true
+    }
+
     switch result {
     case let .connected(connectedDevice):
       await switchOutputIfNeeded(for: connectedDevice)
@@ -150,25 +162,34 @@ final class ReconnectCoordinator: ObservableObject {
   }
 
   private func switchOutputIfNeeded(for device: BluetoothAudioDevice) async {
-    guard settingsStore.automaticallySwitchesOutput else {
-      status = .connected(targetName: device.name)
-      return
-    }
-
-    guard let outputDevice = await audioRouteService.waitForOutputDevice(
-      matching: device,
-      timeout: 20
-    ) else {
-      let message = "已连接，但未找到音频输出：\(device.name)"
-      status = .failed(message: message)
-      logger.error("\(message, privacy: .public)")
-      return
-    }
-
     do {
+      try Task.checkCancellation()
+
+      guard settingsStore.automaticallySwitchesOutput else {
+        status = .connected(targetName: device.name)
+        return
+      }
+
+      guard let outputDevice = try await audioRouteService.waitForOutputDevice(
+        matching: device,
+        timeout: 20
+      ) else {
+        try Task.checkCancellation()
+
+        let message = "已连接，但未找到音频输出：\(device.name)"
+        status = .failed(message: message)
+        logger.error("\(message, privacy: .public)")
+        return
+      }
+
+      try Task.checkCancellation()
       try audioRouteService.setDefaultOutputDevice(outputDevice)
+      try Task.checkCancellation()
+
       settingsStore.setRecentDevice(device)
       status = .connected(targetName: device.name)
+    } catch is CancellationError {
+      return
     } catch {
       let message = "已连接，但切换输出失败：\(device.name)"
       status = .failed(message: message)

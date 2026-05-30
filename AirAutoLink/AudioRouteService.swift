@@ -70,15 +70,18 @@ final class AudioRouteService: ObservableObject {
   func waitForOutputDevice(
     matching bluetoothDevice: BluetoothAudioDevice,
     timeout: TimeInterval
-  ) async -> AudioOutputDevice? {
+  ) async throws -> AudioOutputDevice? {
     let deadline = Date().addingTimeInterval(timeout)
 
     repeat {
+      try Task.checkCancellation()
+
       if let outputDevice = bluetoothOutputDevice(matching: bluetoothDevice) {
         return outputDevice
       }
 
-      try? await Task.sleep(for: .milliseconds(500))
+      // 保留 CancellationError，避免用户停止重试后旧任务继续等待并覆盖连接状态。
+      try await Task.sleep(for: .milliseconds(500))
     } while Date() < deadline
 
     return nil
