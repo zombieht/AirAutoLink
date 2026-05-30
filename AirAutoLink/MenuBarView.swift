@@ -21,6 +21,12 @@ struct MenuBarView: View {
 
       Divider()
 
+      Button("显示控制面板...") {
+        NotificationCenter.default.post(name: .showMainWindow, object: nil)
+      }
+
+      Divider()
+
       Button("立即连接") {
         appState.connectNow()
       }

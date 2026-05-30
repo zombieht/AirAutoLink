@@ -16,6 +16,7 @@
 		10A100222C00000100100000 /* BluetoothDeviceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A100102C00000100100000 /* BluetoothDeviceService.swift */; };
 		10A100232C00000100100000 /* AudioRouteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A100112C00000100100000 /* AudioRouteService.swift */; };
 		10A100242C00000100100000 /* ReconnectCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A100122C00000100100000 /* ReconnectCoordinator.swift */; };
+		10A1002E2C00000100100000 /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A100142C00000100100000 /* MainWindowView.swift */; };
 		10A100252C00000100100000 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10A100182C00000100100000 /* IOBluetooth.framework */; };
 		10A100262C00000100100000 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10A100192C00000100100000 /* CoreAudio.framework */; };
 		10A100272C00000100100000 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10A1001A2C00000100100000 /* ServiceManagement.framework */; };
@@ -34,6 +35,7 @@
 		10A100112C00000100100000 /* AudioRouteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRouteService.swift; sourceTree = "<group>"; };
 		10A100122C00000100100000 /* ReconnectCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReconnectCoordinator.swift; sourceTree = "<group>"; };
 		10A100132C00000100100000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		10A100142C00000100100000 /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
 		10A100182C00000100100000 /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = System/Library/Frameworks/IOBluetooth.framework; sourceTree = SDKROOT; };
 		10A100192C00000100100000 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		10A1001A2C00000100100000 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
@@ -83,6 +85,7 @@
 				10A100102C00000100100000 /* BluetoothDeviceService.swift */,
 				10A100112C00000100100000 /* AudioRouteService.swift */,
 				10A100122C00000100100000 /* ReconnectCoordinator.swift */,
+				10A100142C00000100100000 /* MainWindowView.swift */,
 				10A100132C00000100100000 /* Info.plist */,
 				2FED195CFD91F4B5914DFFD9 /* Assets.xcassets */,
 			);
@@ -177,6 +180,7 @@
 				10A100222C00000100100000 /* BluetoothDeviceService.swift in Sources */,
 				10A100232C00000100100000 /* AudioRouteService.swift in Sources */,
 				10A100242C00000100100000 /* ReconnectCoordinator.swift in Sources */,
+				10A1002E2C00000100100000 /* MainWindowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
