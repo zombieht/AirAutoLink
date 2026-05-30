@@ -28,16 +28,22 @@ enum ConnectionStatus: Equatable {
   var systemImageName: String {
     switch self {
     case .noTarget:
-      return "speaker.slash"
+      // 未配置蓝牙设备时，显示带斜线的水平闪电图标作为项目 Logo 的未激活状态
+      return "bolt.horizontal.slash"
     case .ready:
-      return "speaker.wave.2"
+      // 准备好连接但未激活时，显示空心水平闪电图标
+      return "bolt.horizontal"
     case .retrying:
+      // 正在连接中，显示旋转的同步箭头，提供直观的动画感
       return "arrow.triangle.2.circlepath"
     case .connected:
-      return "speaker.wave.3"
+      // 连接成功后，显示实心水平闪电图标表示已激活
+      return "bolt.horizontal.fill"
     case .failed:
+      // 连接失败时，显示警告三角图标
       return "exclamationmark.triangle"
     case .loginItemRequiresApproval:
+      // 需要登录项审批时，显示齿轮与问号图标
       return "gear.badge.questionmark"
     }
   }
