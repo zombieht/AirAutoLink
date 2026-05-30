@@ -31,6 +31,18 @@ Release 构建：
 xcodebuild -project AirAutoLink.xcodeproj -scheme AirAutoLink -configuration Release build
 ```
 
+## 打包
+
+```bash
+# 使用 Xcode 工程中的 MARKETING_VERSION 打包
+./package.sh
+
+# 临时指定本次打包的展示版本号，不会写回工程配置
+./package.sh 1.1.0
+```
+
+打包产物会生成到 `build/` 目录，包括 `.dmg` 与 `.zip` 文件。
+
 ## 运行
 
 可以直接用 Xcode 打开 `AirAutoLink.xcodeproj` 并运行 `AirAutoLink` scheme。
@@ -56,4 +68,3 @@ xcodebuild -project AirAutoLink.xcodeproj -scheme AirAutoLink -configuration Rel
 - 第一版面向本机自用，未启用 App Sandbox，也未做公证、安装器或自动更新。
 - 应用负责重连已配对设备，不负责首次配对。
 - 如果登录项显示需要批准，请到系统设置的登录项页面手动允许 AirAutoLink。
-
