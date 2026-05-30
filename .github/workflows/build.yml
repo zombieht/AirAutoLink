@@ -1,0 +1,56 @@
+# .github/workflows/build.yml
+name: Build and Package Mac App
+
+# 触发条件：当 main 分支有 push 或 pull_request 时触发；或者有推送形如 v1.0.0 的版本标签时触发
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: 编译与打包 macOS 应用
+    runs-on: macos-latest # 使用 macOS 系统以支持 Xcode 编译
+
+    steps:
+      # 步骤 1: 检出仓库代码
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 步骤 2: 缓存 Homebrew 依赖，加速 create-dmg 工具的安装
+      - name: Set up Homebrew Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/Library/Caches/Homebrew
+            /usr/local/Homebrew
+          key: ${{ runner.os }}-brew-create-dmg
+          restore-keys: |
+            ${{ runner.os }}-brew-
+
+      # 步骤 3: 运行项目的打包脚本
+      - name: Run Build and Package Script
+        run: |
+          chmod +x package.sh
+          # 如果是通过推送 tag（例如 v1.2.3）触发，则提取 tag 名称去除 'v' 前缀后作为版本号传给脚本
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            VERSION_TAG="${GITHUB_REF_NAME#v}"
+            echo "==> 检测到 Tag 触发，使用版本号: $VERSION_TAG"
+            ./package.sh "$VERSION_TAG"
+          else
+            echo "==> 非 Tag 触发，使用项目自带的 MARKETING_VERSION 版本号"
+            ./package.sh
+          fi
+
+      # 步骤 4: 将生成的 DMG 和 ZIP 压缩包上传至 GitHub Actions 归档中，供在网页上下载
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: AirAutoLink-macOS-Release
+          path: |
+            build/*.dmg
+            build/*.zip
+          if-no-files-found: error # 如果打包文件丢失，则工作流显式报错

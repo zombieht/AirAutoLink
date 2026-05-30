@@ -1,13 +1,25 @@
 #!/bin/bash
 set -e
 
-# 设置变量
+# 设置变量与版本号
 PROJECT_NAME="AirAutoLink"
 PROJECT_DIR="$(pwd)"
 BUILD_DIR="${PROJECT_DIR}/build"
+
+# 获取版本号：优先使用命令行传入的参数，其次自动从 Xcode 项目中提取 MARKETING_VERSION
+if [ -n "$1" ]; then
+    VERSION="$1"
+    echo "==> 使用传入的版本号: ${VERSION}"
+else
+    # 自动从 xcodebuild 获取版本配置，并清理回车和空格
+    VERSION=$(xcodebuild -project "${PROJECT_NAME}.xcodeproj" -showBuildSettings | grep MARKETING_VERSION | tr -d ' ' | tr -d '\r' | cut -d '=' -f2)
+    VERSION=${VERSION:-"1.0"}
+    echo "==> 自动从 Xcode 项目提取版本号: ${VERSION}"
+fi
+
 APP_PATH="${BUILD_DIR}/${PROJECT_NAME}.app"
-DMG_PATH="${BUILD_DIR}/${PROJECT_NAME}.dmg"
-ZIP_PATH="${BUILD_DIR}/${PROJECT_NAME}.zip"
+DMG_PATH="${BUILD_DIR}/${PROJECT_NAME}-${VERSION}.dmg"
+ZIP_PATH="${BUILD_DIR}/${PROJECT_NAME}-${VERSION}.zip"
 
 # 清理并创建构建目录
 echo "==> 清理旧的构建目录..."
@@ -46,7 +58,7 @@ codesign --force --deep --sign - "${APP_PATH}"
 
 echo "==> 正在创建 ZIP 压缩包..."
 cd "${BUILD_DIR}"
-zip -qr "${PROJECT_NAME}.zip" "${PROJECT_NAME}.app"
+zip -qr "${PROJECT_NAME}-${VERSION}.zip" "${PROJECT_NAME}.app"
 cd "${PROJECT_DIR}"
 
 echo "==> 正在创建美化版 DMG..."
