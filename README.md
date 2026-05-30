@@ -64,7 +64,7 @@ xcodebuild -project AirAutoLink.xcodeproj -scheme AirAutoLink -configuration Rel
 5. 下次登录后，应用会自动尝试重连目标设备并自动切换输出。
 
 ## 说明
-
+- 安装出现提示删除请到隐私与安全性-->安全性 选择仍要打开
 - 第一版面向本机自用，未启用 App Sandbox，也未做公证、安装器或自动更新。
 - 应用负责重连已配对设备，不负责首次配对。
 - 如果登录项显示需要批准，请到系统设置的登录项页面手动允许 AirAutoLink。
