@@ -59,13 +59,19 @@ struct MainWindowView: View {
   private var leftPanel: some View {
     VStack(alignment: .leading, spacing: 16) {
       // 顶部标题区域
-      HStack {
-        Image(systemName: "bolt.horizontal.fill")
-          .foregroundStyle(.blue)
-          .font(.title2)
-        Text("AirAutoLink")
-          .font(.system(.title2, design: .rounded))
-          .fontWeight(.bold)
+      VStack(alignment: .leading, spacing: 2) {
+        HStack {
+          Image(systemName: "bolt.horizontal.fill")
+            .foregroundStyle(.blue)
+            .font(.title2)
+          Text("AirAutoLink")
+            .font(.system(.title2, design: .rounded))
+            .fontWeight(.bold)
+        }
+
+        Text(AppVersion.displayText)
+          .font(.caption)
+          .foregroundStyle(.secondary)
       }
       .padding(.top, 16)
       

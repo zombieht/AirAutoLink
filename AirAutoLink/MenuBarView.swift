@@ -96,6 +96,10 @@ struct MenuBarView: View {
       Text("AirAutoLink")
         .font(.headline)
 
+      Text(AppVersion.displayText)
+        .font(.caption)
+        .foregroundStyle(.secondary)
+
       Text(reconnectCoordinator.status.title)
         .font(.subheadline)
         .foregroundStyle(.secondary)
