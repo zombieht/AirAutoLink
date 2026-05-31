@@ -36,12 +36,11 @@ else
     echo "==> 自动从 Xcode 项目提取版本号: ${VERSION}"
 fi
 
-APP_PATH="${BUILD_DIR}/${PROJECT_NAME}.app"
 DMG_PATH="${BUILD_DIR}/${PROJECT_NAME}-${VERSION}.dmg"
 ZIP_PATH="${BUILD_DIR}/${PROJECT_NAME}-${VERSION}.zip"
 
 cleanup() {
-    # 只清理脚本本次产生的临时目录与 create-dmg 中间镜像，保留最终 .app/.dmg/.zip 产物。
+    # 只清理脚本本次产生的临时目录与 create-dmg 中间镜像，保留最终 .dmg/.zip 产物。
     rm -rf "${DERIVED_DATA_DIR}" "${DMG_SOURCE_DIR}" "${BUILD_DIR}"/rw.*."${PROJECT_NAME}-${VERSION}".dmg
 }
 
@@ -88,21 +87,23 @@ if [ ! -d "${COMPILED_APP}" ]; then
     exit 1
 fi
 
-# 复制 app 到 build 根目录，ditto 可以更完整保留 macOS App Bundle 的资源属性。
-echo "==> 复制应用到打包目录..."
-ditto "${COMPILED_APP}" "${APP_PATH}"
-
-# 进行 Ad-Hoc 签名
-echo "==> 进行本地 Ad-Hoc 签名..."
-codesign --force --deep --sign - "${APP_PATH}"
-
-echo "==> 正在创建 ZIP 压缩包..."
-ditto -c -k --sequesterRsrc --keepParent "${APP_PATH}" "${ZIP_PATH}"
-
 # create-dmg 的源参数必须是包含 .app 的目录，而不是 .app Bundle 本身。
 rm -rf "${DMG_SOURCE_DIR}"
 mkdir -p "${DMG_SOURCE_DIR}"
-ditto "${APP_PATH}" "${DMG_SOURCE_DIR}/${PROJECT_NAME}.app"
+
+# 仅在临时打包目录保留 App，避免 build 根目录的同名 .app 被 LaunchServices 误当作安装副本。
+echo "==> 复制应用到临时打包目录..."
+ditto "${COMPILED_APP}" "${DMG_SOURCE_DIR}/${PROJECT_NAME}.app"
+
+# 进行 Ad-Hoc 签名
+echo "==> 进行本地 Ad-Hoc 签名..."
+codesign --force --deep --sign - "${DMG_SOURCE_DIR}/${PROJECT_NAME}.app"
+
+echo "==> 正在创建 ZIP 压缩包..."
+(
+    cd "${DMG_SOURCE_DIR}"
+    ditto -c -k --sequesterRsrc --keepParent "${PROJECT_NAME}.app" "${ZIP_PATH}"
+)
 
 create_pretty_dmg() {
     create-dmg \
