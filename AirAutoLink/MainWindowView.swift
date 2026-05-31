@@ -45,13 +45,8 @@ struct MainWindowView: View {
     .frame(width: 560, height: 380)
     .clipShape(RoundedRectangle(cornerRadius: 12))
     .onAppear {
-      // 窗口显示时，动态将应用策略设置为普通应用（在 Dock 显示并可聚焦）
-      NSApp.setActivationPolicy(.regular)
+      // 应用现在保持普通 App 形态，确保能出现在 Dock、启动台与应用切换器中。
       NSApp.activate(ignoringOtherApps: true)
-    }
-    .onDisappear {
-      // 窗口关闭时，动态将应用策略恢复为 Accessory 辅助应用（在 Dock 隐藏，保持菜单栏静默常驻）
-      NSApp.setActivationPolicy(.accessory)
     }
   }
   
