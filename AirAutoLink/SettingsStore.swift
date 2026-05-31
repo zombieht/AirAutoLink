@@ -1,3 +1,4 @@
+import AppKit
 import Foundation
 import ServiceManagement
 
@@ -12,12 +13,25 @@ final class SettingsStore: ObservableObject {
       userDefaults.set(automaticallySwitchesOutput, forKey: Key.automaticallySwitchesOutput)
     }
   }
+  @Published var showsDockIcon: Bool {
+    didSet {
+      userDefaults.set(showsDockIcon, forKey: Key.showsDockIcon)
+      updateActivationPolicy()
+    }
+  }
+  @Published var showsMenuBarIcon: Bool {
+    didSet {
+      userDefaults.set(showsMenuBarIcon, forKey: Key.showsMenuBarIcon)
+    }
+  }
 
   private enum Key {
     static let pinnedDevice = "pinnedDevice"
     static let recentDevice = "recentDevice"
     static let automaticallySwitchesOutput = "automaticallySwitchesOutput"
     static let launchesAtLogin = "launchesAtLogin"
+    static let showsDockIcon = "showsDockIcon"
+    static let showsMenuBarIcon = "showsMenuBarIcon"
   }
 
   private let userDefaults: UserDefaults
@@ -28,9 +42,26 @@ final class SettingsStore: ObservableObject {
     self.userDefaults = userDefaults
     self.automaticallySwitchesOutput =
       userDefaults.object(forKey: Key.automaticallySwitchesOutput) as? Bool ?? true
+    self.showsDockIcon =
+      userDefaults.object(forKey: Key.showsDockIcon) as? Bool ?? true
+    self.showsMenuBarIcon =
+      userDefaults.object(forKey: Key.showsMenuBarIcon) as? Bool ?? true
     self.pinnedDevice = Self.readDevice(forKey: Key.pinnedDevice, from: userDefaults)
     self.recentDevice = Self.readDevice(forKey: Key.recentDevice, from: userDefaults)
     refreshLoginItemStatus()
+    updateActivationPolicy()
+  }
+
+  /// 根据当前设置动态更新应用激活策略（是否显示 Dock 图标）
+  func updateActivationPolicy() {
+    let policy: NSApplication.ActivationPolicy = showsDockIcon ? .regular : .accessory
+    if NSApp.activationPolicy() != policy {
+      NSApp.setActivationPolicy(policy)
+      if policy == .regular {
+        // 切回 regular 策略时，主动激活 App，使其显示到最前
+        NSApp.activate(ignoringOtherApps: true)
+      }
+    }
   }
 
   func setPinnedDevice(_ device: BluetoothAudioDevice?) {

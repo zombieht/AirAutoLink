@@ -22,7 +22,7 @@ struct MenuBarView: View {
       Divider()
 
       Button("显示控制面板...") {
-        NotificationCenter.default.post(name: .showMainWindow, object: nil)
+        WindowManager.shared.showMainWindow()
       }
 
       Divider()
@@ -59,6 +59,30 @@ struct MenuBarView: View {
           },
           set: { newValue in
             settingsStore.automaticallySwitchesOutput = newValue
+          }
+        )
+      )
+
+      Toggle(
+        "显示 Dock 图标",
+        isOn: Binding(
+          get: {
+            settingsStore.showsDockIcon
+          },
+          set: { newValue in
+            handleDockIconToggle(newValue)
+          }
+        )
+      )
+
+      Toggle(
+        "显示菜单栏图标",
+        isOn: Binding(
+          get: {
+            settingsStore.showsMenuBarIcon
+          },
+          set: { newValue in
+            handleMenuBarIconToggle(newValue)
           }
         )
       )
@@ -160,5 +184,45 @@ struct MenuBarView: View {
     bluetoothDeviceService.pairedAudioDevices.map { device in
       device.withPinnedState(settingsStore.pinnedDevice?.id == device.id)
     }
+  }
+
+  // MARK: - 图标显示交互处理
+
+  private func handleDockIconToggle(_ newValue: Bool) {
+    guard settingsStore.showsDockIcon != newValue else { return }
+    if !newValue && !settingsStore.showsMenuBarIcon {
+      showDoubleHideAlert { confirmed in
+        if confirmed {
+          settingsStore.showsDockIcon = false
+        }
+      }
+    } else {
+      settingsStore.showsDockIcon = newValue
+    }
+  }
+
+  private func handleMenuBarIconToggle(_ newValue: Bool) {
+    guard settingsStore.showsMenuBarIcon != newValue else { return }
+    if !newValue && !settingsStore.showsDockIcon {
+      showDoubleHideAlert { confirmed in
+        if confirmed {
+          settingsStore.showsMenuBarIcon = false
+        }
+      }
+    } else {
+      settingsStore.showsMenuBarIcon = newValue
+    }
+  }
+
+  private func showDoubleHideAlert(completion: @escaping (Bool) -> Void) {
+    let alert = NSAlert()
+    alert.messageText = "确定要同时隐藏所有图标吗？"
+    alert.informativeText = "同时隐藏 Dock 图标和菜单栏图标后，应用将在后台静默运行。\n\n若需重新打开控制面板，请通过系统【启动台 (Launchpad)】再次点击 AirAutoLink 应用程序图标。"
+    alert.alertStyle = .warning
+    alert.addButton(withTitle: "确定隐藏")
+    alert.addButton(withTitle: "取消")
+
+    let response = alert.runModal()
+    completion(response == .alertFirstButtonReturn)
   }
 }

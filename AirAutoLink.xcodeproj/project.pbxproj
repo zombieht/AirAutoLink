@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		10A1001C2C00000100100000 /* AirAutoLinkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A1000A2C00000100100000 /* AirAutoLinkApp.swift */; };
 		10A1001D2C00000100100000 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A1000B2C00000100100000 /* AppState.swift */; };
+		10A100FF2C00000100100000 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A100FE2C00000100100000 /* WindowManager.swift */; };
 		10A1001E2C00000100100000 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A1000C2C00000100100000 /* MenuBarView.swift */; };
 		10A1001F2C00000100100000 /* BluetoothAudioDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A1000D2C00000100100000 /* BluetoothAudioDevice.swift */; };
 		10A100202C00000100100000 /* ConnectionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A1000E2C00000100100000 /* ConnectionStatus.swift */; };
@@ -27,6 +28,7 @@
 		10A100012C00000100100000 /* AirAutoLink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirAutoLink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10A1000A2C00000100100000 /* AirAutoLinkApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirAutoLinkApp.swift; sourceTree = "<group>"; };
 		10A1000B2C00000100100000 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		10A100FE2C00000100100000 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		10A1000C2C00000100100000 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		10A1000D2C00000100100000 /* BluetoothAudioDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothAudioDevice.swift; sourceTree = "<group>"; };
 		10A1000E2C00000100100000 /* ConnectionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatus.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			children = (
 				10A1000A2C00000100100000 /* AirAutoLinkApp.swift */,
 				10A1000B2C00000100100000 /* AppState.swift */,
+				10A100FE2C00000100100000 /* WindowManager.swift */,
 				10A1000C2C00000100100000 /* MenuBarView.swift */,
 				10A1000D2C00000100100000 /* BluetoothAudioDevice.swift */,
 				10A1000E2C00000100100000 /* ConnectionStatus.swift */,
@@ -173,6 +176,7 @@
 			files = (
 				10A1001C2C00000100100000 /* AirAutoLinkApp.swift in Sources */,
 				10A1001D2C00000100100000 /* AppState.swift in Sources */,
+				10A100FF2C00000100100000 /* WindowManager.swift in Sources */,
 				10A1001E2C00000100100000 /* MenuBarView.swift in Sources */,
 				10A1001F2C00000100100000 /* BluetoothAudioDevice.swift in Sources */,
 				10A100202C00000100100000 /* ConnectionStatus.swift in Sources */,
@@ -314,7 +318,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_LANGUAGE = en;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -323,7 +327,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zombie.AirAutoLink;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = macosx;
@@ -340,7 +344,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_LANGUAGE = en;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -349,7 +353,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zombie.AirAutoLink;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = macosx;

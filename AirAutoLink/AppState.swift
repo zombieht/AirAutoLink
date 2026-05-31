@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 import Foundation
 
 @MainActor
@@ -7,6 +8,8 @@ final class AppState: ObservableObject {
   let bluetoothDeviceService: BluetoothDeviceService
   let audioRouteService: AudioRouteService
   let reconnectCoordinator: ReconnectCoordinator
+  
+  private var cancellables = Set<AnyCancellable>()
 
   init() {
     let settingsStore = SettingsStore()
@@ -28,6 +31,14 @@ final class AppState: ObservableObject {
 
     recordRecentBluetoothOutput(audioRouteService.currentOutputDevice)
     reconnectCoordinator.startLoginReconnect()
+    WindowManager.shared.setup(appState: self)
+    
+    // 监听 settingsStore 的变化，确保父级 AppState 和观察它的 AppScene 能实时收到重绘通知
+    settingsStore.objectWillChange
+      .sink { [weak self] _ in
+        self?.objectWillChange.send()
+      }
+      .store(in: &cancellables)
   }
 
   func connectNow() {
