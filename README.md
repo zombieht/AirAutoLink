@@ -1,69 +1,155 @@
-# AirAutoLink
+<p align="center">
+  <img src="AppIcon.png" alt="AirAutoLink Logo" width="128" height="128">
+</p>
 
-一个用于解决 macOS 重新开机或重新登录后，第三方蓝牙音响/音箱不能自动连接到上一次使用设备问题的现代化菜单栏及桌面控制面板工具。
+<h1 align="center">AirAutoLink</h1>
 
-## 功能
+<p align="center">
+  <strong>解决 macOS 开机/登录后第三方蓝牙音箱无法自动连接的痛点，精美毛玻璃质感的桌面与菜单栏控制中心。</strong>
+</p>
 
-- **普通应用与菜单栏入口**：应用会显示在 Dock、启动台与应用切换器中，同时保留菜单栏图标，方便从任一入口打开控制面板。
-- **现代化控制面板**：提供精美磨砂玻璃（毛玻璃）质感的主窗口界面，支持直观查看当前连接状态与系统音频输出。
-- **设备管理与固定**：支持在大头针（Pin）列表中固定特定的蓝牙音频设备，未固定时会自动记住并重连最近一次使用的设备。
-- **手动连接控制**：可在控制面板和菜单栏中随时点击“立即连接”启动重连，或点击“停止重试”中断连接。
-- **自动重连与切换**：登录后智能等待蓝牙与音频系统就绪，自动重试连接，并在连接成功后自动将系统默认音频输出切换至该设备（可配置是否自动切换）。
-- **常用设置与辅助**：支持开机自动运行开关、连接后自动切换输出开关，一键直达系统“声音”和“蓝牙”配置。
+<p align="center">
+  <a href="https://developer.apple.com/macos/"><img src="https://img.shields.io/badge/Platform-macOS%2015.0%2B-blue?style=flat-square&logo=apple" alt="macOS Support"></a>
+  <a href="https://swift.org"><img src="https://img.shields.io/badge/Language-Swift%206.0-orange?style=flat-square&logo=swift" alt="Language Swift"></a>
+  <a href="https://github.com/zombieht/air-auto-link/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License"></a>
+</p>
 
-## 系统要求
+---
 
-- macOS 15 或更高版本。
-- 目标蓝牙音响需要先在 macOS 系统设置中完成配对。
+### 💡 为什么需要 AirAutoLink？ (Why AirAutoLink?)
 
-## 构建
+许多第三方蓝牙音响/音箱（例如 Marshall, Bose 等）在 macOS 重新开机、关机重启或重新登录后，系统**不会**像对待 Apple 官方设备（如 AirPods）那样，自动恢复并连接到最近一次使用的音频输出。这导致用户每次开机都必须繁琐地点击系统菜单栏的蓝牙或音频图标，手动触发连接并手动切换音频输出通道。
 
-```bash
-# Debug 构建
-xcodebuild -project AirAutoLink.xcodeproj -scheme AirAutoLink -configuration Debug build
+**AirAutoLink** 就是为了彻底解决这一痛点而生的！它会默默在后台守候，在系统启动和音频/蓝牙系统准备就绪后，智能且自动地连接到您最近使用或指定的蓝牙音响，并自动将系统默认音频路由切换过去，为您带来无缝的“开机即用”体验。
+
+---
+
+### ✨ 功能特性
+
+- 🎛️ **毛玻璃控制面板**：提供符合 macOS 现代美学的精致磨砂玻璃窗口，随时直观查看当前蓝牙连接状态与系统音频输出路由。
+- 📌 **大头针锁定设备 (Pin)**：支持通过 Pin 列表锁定特定的蓝牙音频设备，确保重连的精准度。未固定时，系统将智能记忆并自动重连最近一次使用的音频设备。
+- 🔄 **智能自动重连**：开机登录或系统唤醒后，自动监听蓝牙和音频状态。当检测到系统就绪时，自动尝试建立连接，直到成功。
+- 🔊 **自动音频路由**：设备重连成功后，系统支持自动将主声音通道切换至该设备，无需任何手动干预（可配置开关）。
+- ⚙️ **极简菜单栏与辅助**：常驻菜单栏，支持随时一键“立即连接”或“停止重试”，并提供一键快捷直达系统“声音”和“蓝牙”偏好设置的便捷入口。
+- 🚀 **自启动支持**：开箱即用的“开机自动运行”支持，配置极为简单。
+
+---
+
+### 📥 安装与系统要求
+
+#### 系统要求
+* **macOS 15.0 或更高版本**。
+* 目标蓝牙音箱/音响需**已事先在 macOS 系统设置中完成首次配对**。
+
+#### 安装方法
+* 本应用第一版作为自用项目，尚未进行 Apple 公证与 Sandboxing。您可以从 [Releases](https://github.com/zombieht/air-auto-link/releases) 页面下载最新的 `.dmg` 或 `.zip` 压缩包。
+* 将 `AirAutoLink.app` 拖入您的 `Applications (应用程序)` 目录即可。
+
+> [!WARNING]
+> **由于应用未启用 App Sandbox 及进行 Apple 公证**，首次运行时 macOS Gatekeeper 可能会提示“无法打开”或“无法验证开发者”。
+>
+> **解决方法**：
+> 1. 打开系统的 **系统设置 -> 隐私与安全性**，下滑找到并点击 **“仍要打开”**。
+> 2. 或者在终端执行以下命令手动移除隔离属性：
+>    ```bash
+>    xattr -cr /Applications/AirAutoLink.app
+>    ```
+
+---
+
+### 🎨 智能重连工作流 (Workflow)
+
+AirAutoLink 会在后台按以下智能状态机逻辑运行，确保设备平稳连接而不会产生系统级阻塞：
+
+```mermaid
+stateDiagram-v2
+    [*] --> 登录_启动 : App 启动
+    登录_启动 --> 检测系统服务 : 监听蓝牙与音频状态
+    检测系统服务 --> 等待就绪 : 蓝牙未就绪/关闭
+    检测系统服务 --> 扫描目标设备 : 系统服务就绪
+    等待就绪 --> 检测系统服务 : 开启蓝牙
+    扫描目标设备 --> 开始自动连接 : 发现已锁定(Pin)或最近连接设备
+    开始自动连接 --> 连接中 : 尝试连接 (有最大重试机制)
+    连接中 --> 连接成功 : 成功建立蓝牙音频链路
+    连接中 --> 连接失败_等待重试 : 超时或失败
+    连接失败_等待重试 --> 连接中 : 倒计时重试
+    连接成功 --> 切换音频路由 : 检测“连接后切换输出”是否开启
+    切换音频路由 --> [*] : 设置系统默认音频输出，完成工作
 ```
 
-Release 构建：
+---
 
-```bash
-# Release 构建
-xcodebuild -project AirAutoLink.xcodeproj -scheme AirAutoLink -configuration Release build
-```
+### 🚀 使用指南
 
-## 打包
+1. **首次配对**：请先在 macOS 系统设置中连接您的蓝牙音箱，确保其处于可正常播放状态。
+2. **启动应用**：双击运行 AirAutoLink。应用将常驻在系统菜单栏。
+3. **设置设备**：
+   - 点击菜单栏的 AirAutoLink 图标，或者双击启动台应用图标唤起精美的主控制面板。
+   - 在已配对列表中，找到您的蓝牙音箱，点击右侧的 **📌 大头针 (Pin)** 按钮进行固定。
+   - 如果不进行固定，应用在下次启动时也会默认重连 **最近一次使用** 的那个音频设备。
+4. **推荐配置**：在控制面板或菜单栏中勾选 **“开机自动运行”** 与 **“连接后自动切换输出”**，获取最佳体验。
 
-```bash
-# 使用 Xcode 工程中的 MARKETING_VERSION 打包
-./package.sh
+---
 
-# 临时指定本次打包的展示版本号，不会写回工程配置
-./package.sh 1.1.0
-```
+### 🛠️ 编译、打包与开发
 
-打包产物会生成到 `build/` 目录，包括 `.dmg` 与 `.zip` 文件。
+为了保持说明文档的清爽，编译和打包命令已收纳至下方折叠版块中。
 
-## 运行
+<details>
+<summary><b>点击展开 / 折叠开发说明</b></summary>
 
-可以直接用 Xcode 打开 `AirAutoLink.xcodeproj` 并运行 `AirAutoLink` scheme。
+#### 本地运行与开发
+直接使用 Xcode 打开 [AirAutoLink.xcodeproj](file:///Users/zombiehuang/Desktop/work/air-auto-link/AirAutoLink.xcodeproj) 并运行 `AirAutoLink` scheme。
 
-命令行构建后的 Debug 版本默认位于 Xcode DerivedData 目录，例如：
+#### 命令行构建
+* **Debug 编译**：
+  ```bash
+  xcodebuild -project AirAutoLink.xcodeproj -scheme AirAutoLink -configuration Debug build
+  ```
+  Debug 版本默认位于 DerivedData 目录，例如：
+  `~/Library/Developer/Xcode/DerivedData/AirAutoLink-*/Build/Products/Debug/AirAutoLink.app`
 
-```text
-~/Library/Developer/Xcode/DerivedData/AirAutoLink-*/Build/Products/Debug/AirAutoLink.app
-```
+* **Release 编译**：
+  ```bash
+  xcodebuild -project AirAutoLink.xcodeproj -scheme AirAutoLink -configuration Release build
+  ```
 
-首次运行时，macOS 可能会请求蓝牙访问权限。允许后，AirAutoLink 才能读取已配对的蓝牙音频设备并尝试连接。
+#### 一键打包 (DMG / ZIP)
+项目提供了一个全自动打包脚本 [package.sh](file:///Users/zombiehuang/Desktop/work/air-auto-link/package.sh)，它会自动编译 Release 版本、执行 Ad-Hoc 本地签名，并生成美化的 DMG 以及 ZIP 文件。
 
-## 使用流程
+1. 确保安装了 `create-dmg` 工具（脚本在缺失时会尝试使用 Homebrew 自动安装）：
+   ```bash
+   brew install create-dmg
+   ```
+2. 运行打包脚本：
+   ```bash
+   # 使用项目中的默认版本号（来自 Xcode 的 MARKETING_VERSION）进行打包
+   ./package.sh
 
-1. 先在系统设置中确认蓝牙音箱/音响已经配对。
-2. 启动 AirAutoLink，点击菜单栏中的音箱图标，或双击启动台中的应用图标打开控制面板。
-3. 在设备列表中，点击目标音响旁边的大头针（Pin）图标将其固定；或先手动将系统输出切换到该音响，让应用记住最近设备。
-4. 在控制面板或菜单中勾选“开机自动运行”与“连接后切换输出”选项。
-5. 下次登录后，应用会自动尝试重连目标设备并自动切换输出。
+   # 临时指定本次打包的版本号进行打包（不会修改 Xcode 工程配置）
+   ./package.sh 1.1.0
+   ```
+   打包产物会输出到 [build/](file:///Users/zombiehuang/Desktop/work/air-auto-link/build) 目录下。
+</details>
 
-## 说明
-- 安装出现提示删除请到隐私与安全性-->安全性 选择仍要打开
-- 第一版面向本机自用，未启用 App Sandbox，也未做公证、安装器或自动更新。
-- 应用负责重连已配对设备，不负责首次配对。
-- 如果登录项显示需要批准，请到系统设置的登录项页面手动允许 AirAutoLink。
+---
+
+### ⚠️ 注意事项与 FAQ
+
+> [!IMPORTANT]
+> **蓝牙权限申请**
+> 首次运行时，应用会请求 macOS 的蓝牙访问权限。如果误拒，请在 **系统设置 -> 隐私与安全性 -> 蓝牙** 中重新勾选允许 AirAutoLink。
+
+> [!NOTE]
+> **登录项允许**
+> 如果您启用了“开机自动运行”，系统可能会提示有新的登录项被添加。请确保在 **系统设置 -> 通用 -> 登录项与延伸功能** 中允许 AirAutoLink 运行。
+
+> [!TIP]
+> **首次配对职责**
+> AirAutoLink 专注于解决**已配对**设备的自动重连与音频输出路由切换，它并不负责新蓝牙设备的配对。新设备请先在 macOS 蓝牙设置中进行配对。
+
+---
+
+### 📄 开源许可证
+
+本项目目前用于自用和交流，遵循 **MIT License**。详情请参阅项目中的许可协议。
